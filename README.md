@@ -58,9 +58,110 @@ curl --location --request POST 'localhost:9200/_reindex' \
 
 9. 索引别名
 
-
-
 ### 二、文档
+
+1. 查看某index下的文档
+
+```
+curl --location --request GET 'localhost:9200/learn/_search' \
+--header 'Content-Type: application/json' \
+--data-raw '// 聚合
+{
+    "query": {
+        "match_all": {}
+    }
+}
+```
+
+2. 在某index下创建文档(id随机)
+
+```
+curl --location --request POST 'localhost:9200/learn/_doc' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "id": 1,
+    "name": "",
+    "age": 21
+}'
+```
+
+3. 在某index下创建文档(id指定)
+
+```
+curl --location --request POST 'localhost:9200/learn/_doc/5' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "id": 5,
+    "name": "张飞",
+    "age": 22
+}'
+```
+
+4. 查看某index下的指定文档(指定id)
+
+```
+curl --location --request GET 'localhost:9200/learn/_doc/1'
+```
+
+5. 文档全局修改(指定id)
+
+```
+curl --location --request POST 'localhost:9200/learn/_doc/1' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "name":"修改后的王武"
+}'
+```
+
+6. 文档局部修改(指定id)
+
+```
+curl --location --request POST 'http://localhost:9200/learn/_doc/SmU_uIUB_sI_GoYmlaaW/_update' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "doc": {
+        "name": "修改之后的张三"
+    }
+}'
+```
+
+7. 删除指定文档
+
+```
+curl --location --request DELETE 'localhost:9200/learn/_doc/1'
+```
+
+8. 获取批量文档
+
+```
+curl --location --request POST 'localhost:9200/_mget' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "docs": [{
+        "_source": ["id"],
+        "_index": "learn",
+        "_type": "_doc",
+        "_id":1
+        },{
+            "_index": "shopping",
+            "_type": "_doc",
+            "_id":1
+        }
+    ]
+}'
+```
+
+9. 通过某字段获取批量文档
+
+```
+curl --location --request POST 'localhost:9200/learn/_mget' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "ids":[1, 2, 3, 4]
+}'
+```
+
+
 
 ### 三、映射
 
